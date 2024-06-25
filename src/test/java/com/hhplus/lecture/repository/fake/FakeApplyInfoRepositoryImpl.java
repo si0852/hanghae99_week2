@@ -17,6 +17,6 @@ public class FakeApplyInfoRepositoryImpl implements ApplyInfoRepository {
 
     @Override
     public List<Apply> findById(long lcId, long userId) {
-        return table.stream().filter(apply -> apply.getLmId() == lcId && apply.getUserId() == userId).toList();
+        return table.stream().filter(apply -> apply.getLcId() == lcId && apply.getUserId() == userId).toList();
     }
 }

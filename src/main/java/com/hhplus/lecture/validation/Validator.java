@@ -37,9 +37,7 @@ public class Validator {
     }
 
     public static void validate(ValidationType validationType) throws Exception {
-        if(validationType.equals(ValidationType.USER_INVALID))
-            throw new NoUserInfoException(new Response(500, "유저정보가 없습니다."));
-        else if(validationType.equals(ValidationType.LECTURE_INVALID))
+        if(validationType.equals(ValidationType.LECTURE_INVALID))
             throw new NoLectureInfoException(new Response(500, "강의정보가 없습니다."));
         else if(validationType.equals(ValidationType.FULL_OF_PEOPLE))
             throw new FullOfPeopleException(new Response(500, "마감된 강의입니다."));

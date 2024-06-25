@@ -14,14 +14,14 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lecture {
     @Id
-    private long lmId;
+    private long lcId;
     private String lectureName;
     private Date openDate;
     private int maxAttendees;
 
     @Builder
-    public Lecture (long lmId, String lectureName, Date openDate, int maxAttendees) {
-        this.lmId = lmId;
+    public Lecture (long lcId, String lectureName, Date openDate, int maxAttendees) {
+        this.lcId = lcId;
         this.lectureName = lectureName;
         this.openDate = openDate;
         this.maxAttendees = maxAttendees;

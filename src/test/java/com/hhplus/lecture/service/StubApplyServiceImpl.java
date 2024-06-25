@@ -1,5 +1,6 @@
 package com.hhplus.lecture.service;
 
+import com.hhplus.lecture.dto.ApplyDto;
 import com.hhplus.lecture.entity.Apply;
 import com.hhplus.lecture.entity.Lecture;
 import com.hhplus.lecture.entity.Users;
@@ -24,24 +25,24 @@ public class StubApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public Apply apply(long lcId, long userId) throws Exception{
+    public Apply apply(ApplyDto applyDto) throws Exception{
 
         try{
-            Users userInfo = userInfoRepository.findById(userId);
-            Lecture lectureInfo = lectureInfoRepository.findById(lcId);
-            List<Apply> apply = applyInfoRepository.findById(lcId, userId);
+            Users userInfo = userInfoRepository.findById(applyDto.userId());
+            Lecture lectureInfo = lectureInfoRepository.findById(applyDto.lcId());
+            List<Apply> apply = applyInfoRepository.findById(applyDto.lcId(), applyDto.userId());
             validationCheck(userInfo, lectureInfo, apply.size()>0 ? apply.get(0) : null);
             Apply insertApply = null;
             if (apply.size() == 0) {
-                 insertApply = Apply.builder().lmId(lcId).userId(userId).attendDate(new Date()).attendanceYn("Y").build();
+                 insertApply = Apply.builder().lcId(applyDto.lcId()).userId(applyDto.userId()).attendDate(new Date()).attendanceYn("Y").build();
                 applyInfoRepository.save(insertApply);
                 int maxAttendees = lectureInfo.getMaxAttendees() - 1;
                 Lecture updateLecture = Lecture.builder()
-                        .lmId(lectureInfo.getLmId())
+                        .lcId(lectureInfo.getLcId())
                         .lectureName(lectureInfo.getLectureName())
                         .openDate(lectureInfo.getOpenDate())
                         .maxAttendees(maxAttendees).build();
-                lectureInfoRepository.update(updateLecture.getLmId(), updateLecture);
+                lectureInfoRepository.update(updateLecture.getLcId(), updateLecture);
             }
 
             return insertApply;

@@ -57,7 +57,7 @@ class RepositoryTest {
         //given
         long lcId = 124L;
         Date openDate = getDate(2024, 06, 20);
-        Lecture lecture = Lecture.builder().lmId(lcId).lectureName("한국사").openDate(openDate).maxAttendees(30).build();
+        Lecture lecture = Lecture.builder().lcId(lcId).lectureName("한국사").openDate(openDate).maxAttendees(30).build();
         lectureInfoRepository.save(lecture);
         //when
         Lecture selectLecture = lectureInfoRepository.findById(lcId);
@@ -107,7 +107,7 @@ class RepositoryTest {
         long lmId = UUID.randomUUID().getLeastSignificantBits();
         String attendanceYn = "Y";
         Apply apply = Apply.builder().
-                        applyId(applyId).lmId(lmId).userId(userId)
+                        applyId(applyId).lcId(lmId).userId(userId)
                 .attendDate(getDate(2024, 06, 21))
                 .attendanceYn(attendanceYn)
                 .build();

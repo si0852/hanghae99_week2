@@ -9,7 +9,7 @@ public class FakeLectureInfoRepositoryImpl implements LectureInfoRepository {
 
     @Override
     public Lecture save(Lecture lecture) {
-        table.put(lecture.getLmId(), lecture);
+        table.put(lecture.getLcId(), lecture);
         return lecture;
     }
 
@@ -20,7 +20,7 @@ public class FakeLectureInfoRepositoryImpl implements LectureInfoRepository {
 
     @Override
     public Lecture update(long lcId, Lecture lecture) {
-        table.put(lecture.getLmId(), lecture);
+        table.put(lecture.getLcId(), lecture);
         return lecture;
     }
 

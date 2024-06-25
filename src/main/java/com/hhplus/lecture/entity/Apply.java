@@ -19,15 +19,15 @@ public class Apply {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long applyId;
-    private Long lmId;
+    private Long lcId;
     private Long userId;
     private Date attendDate;
     private String attendanceYn;
 
     @Builder
-    public Apply(Long applyId, Long lmId, Long userId, Date attendDate, String attendanceYn) {
+    public Apply(Long applyId, Long lcId, Long userId, Date attendDate, String attendanceYn) {
         this.applyId = applyId;
-        this.lmId = lmId;
+        this.lcId = lcId;
         this.userId = userId;
         this.attendDate = attendDate;
         this.attendanceYn = attendanceYn;
