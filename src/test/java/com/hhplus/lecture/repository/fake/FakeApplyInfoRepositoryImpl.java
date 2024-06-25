@@ -1,7 +1,6 @@
-package com.hhplus.lecture.service.fake.impl;
+package com.hhplus.lecture.repository.fake;
 
 import com.hhplus.lecture.entity.Apply;
-import com.hhplus.lecture.service.fake.ApplyInfoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +8,15 @@ import java.util.List;
 public class FakeApplyInfoRepositoryImpl implements ApplyInfoRepository {
     private final List<Apply> table = new ArrayList<>();
 
-    @Override
-    public List<Apply> findAll() {
-        return null;
-    }
 
     @Override
     public Apply save(Apply apply) {
-        return null;
+        table.add(apply);
+        return apply;
     }
 
     @Override
-    public Apply findById(long applyId) {
-        return null;
+    public List<Apply> findById(long lcId, long userId) {
+        return table.stream().filter(apply -> apply.getLmId() == lcId && apply.getUserId() == userId).toList();
     }
 }

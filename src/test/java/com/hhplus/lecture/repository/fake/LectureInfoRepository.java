@@ -1,4 +1,4 @@
-package com.hhplus.lecture.service.fake;
+package com.hhplus.lecture.repository.fake;
 
 import com.hhplus.lecture.entity.Lecture;
 
@@ -9,9 +9,7 @@ public interface LectureInfoRepository {
 
     Lecture save(Lecture lecture);
 
-    List<Lecture> findAll();
+    Lecture findById(long lmId);
 
-    Optional<Lecture> findById(long lmId);
-
-    void deleteAll();
+    Lecture update(long lcId, Lecture lecture);
 }
