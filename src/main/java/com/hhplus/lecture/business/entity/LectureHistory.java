@@ -2,6 +2,7 @@ package com.hhplus.lecture.business.entity;
 
 import com.hhplus.lecture.type.LectureType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Date;
@@ -16,8 +17,10 @@ public class LectureHistory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long historyId;
 
+    @NotNull
     private Long lmId;
 
+    @NotNull
     private Long userId;
 
     @Enumerated(EnumType.STRING)
@@ -25,7 +28,6 @@ public class LectureHistory {
 
     private Date attendDate;
 
-    @Builder
     public LectureHistory(Long historyId, Long lmId, Long userId, LectureType type, Date attendDate) {
         this.historyId = historyId;
         this.lmId = lmId;

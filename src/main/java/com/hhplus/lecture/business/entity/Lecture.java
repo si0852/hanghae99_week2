@@ -2,6 +2,9 @@ package com.hhplus.lecture.business.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,15 +18,15 @@ import java.util.Date;
 public class Lecture {
     @Id
     private long lcId;
+    @NotBlank
     private String lectureName;
-    private Date openDate;
+    @Min(1)
     private int maxAttendees;
 
-    @Builder
-    public Lecture (long lcId, String lectureName, Date openDate, int maxAttendees) {
+
+    public Lecture (long lcId, String lectureName, int maxAttendees) {
         this.lcId = lcId;
         this.lectureName = lectureName;
-        this.openDate = openDate;
         this.maxAttendees = maxAttendees;
     }
 }

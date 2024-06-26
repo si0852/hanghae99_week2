@@ -17,7 +17,6 @@ public class Users {
 
     private String userName;
 
-    @Builder
     public Users(long userId, String userName) {
         this.userId = userId;
         this.userName = userName;

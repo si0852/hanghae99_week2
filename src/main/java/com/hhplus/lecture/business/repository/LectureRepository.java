@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface LectureRepository extends JpaRepository<Lecture, Long> {
+public interface LectureRepository{
 
     Lecture save(Lecture lecture);
 
-    Optional<Lecture> findById(long lcId) throws Exception;
+    Lecture findById(long lcId);
 }

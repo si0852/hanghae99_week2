@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ApplyRepository extends JpaRepository<Apply, Long> {
+public interface ApplyRepository{
 
     Apply save(Apply apply);
-    Optional<Apply> findByLcIdAndUserId(long lcId, long userId);
+    Apply getApplyInfo(long lcId, long userId);
 }
