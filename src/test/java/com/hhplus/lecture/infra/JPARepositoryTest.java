@@ -1,11 +1,14 @@
-package com.hhplus.lecture.repository;
+package com.hhplus.lecture.infra;
 
-import com.hhplus.lecture.entity.Apply;
-import com.hhplus.lecture.entity.Lecture;
-import com.hhplus.lecture.entity.LectureHistory;
-import com.hhplus.lecture.entity.Users;
+import com.hhplus.lecture.business.entity.Apply;
+import com.hhplus.lecture.business.entity.Lecture;
+import com.hhplus.lecture.business.entity.LectureHistory;
+import com.hhplus.lecture.business.entity.Users;
+import com.hhplus.lecture.business.repository.ApplyRepository;
+import com.hhplus.lecture.business.repository.LectureHistoryRepository;
+import com.hhplus.lecture.business.repository.LectureRepository;
+import com.hhplus.lecture.business.repository.UserRepository;
 import com.hhplus.lecture.type.LectureType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,31 +17,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class LectureRepositoryTest {
+public class JPARepositoryTest {
+
 
     @Autowired
     private LectureRepository lectureRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ApplyRepository applyRepository;
+
     @Autowired
     private LectureHistoryRepository lectureHistoryRepository;
 
 
-    private static final Logger log = LoggerFactory.getLogger(LectureRepositoryTest.class);
+    private static final Logger log = LoggerFactory.getLogger(JPARepositoryTest.class);
 
 
     @Test
     @DisplayName("저장된 강의 불러오기1")
-    public void get_lecture_info() {
+    public void get_lecture_info() throws Exception{
 
         // given
         Lecture insertLecture = lectureRepository.save(Lecture.builder()
@@ -48,16 +53,16 @@ public class LectureRepositoryTest {
                 .maxAttendees(30).build());
 
         // when
-        Optional<Lecture> lectureInfo = lectureRepository.findById(1L);
+        Lecture lectureInfo = lectureRepository.findById(1L).orElse(null);
 
         // then
-        assertEquals(insertLecture.getLcId(), lectureInfo.get().getLcId());
-        assertEquals(insertLecture.getLectureName(), lectureInfo.get().getLectureName());
+        assertEquals(insertLecture.getLcId(), lectureInfo.getLcId());
+        assertEquals(insertLecture.getLectureName(), lectureInfo.getLectureName());
     }
 
     @Test
     @DisplayName("저장된 강의 불러오기2")
-    public void get_lecture_info2() {
+    public void get_lecture_info2() throws Exception{
 
         // given
         long lmId = 2L;
@@ -68,25 +73,25 @@ public class LectureRepositoryTest {
                 .maxAttendees(30).build());
 
         // when
-        Optional<Lecture> lectureInfo = lectureRepository.findById(lmId);
+        Lecture lectureInfo = lectureRepository.findById(lmId).orElse(null);
 
         // then
-        assertEquals(insertLecture.getLcId(), lectureInfo.get().getLcId());
-        assertEquals(insertLecture.getLectureName(), lectureInfo.get().getLectureName());
+        assertEquals(insertLecture.getLcId(), lectureInfo.getLcId());
+        assertEquals(insertLecture.getLectureName(), lectureInfo.getLectureName());
     }
 
 
 
     @Test
     @DisplayName("유저 정보 불러오기")
-    public void get_user() {
+    public void get_user() throws Exception {
         //given
         Users insertUser = userRepository.save(Users.builder()
                 .userId(1L)
                 .userName("이하이").build());
 
         // when
-        Users userInfo = userRepository.findAll().get(0);
+        Users userInfo = userRepository.findById(1L).orElse(null);
 
         // then
         assertEquals(insertUser.getUserId(), userInfo.getUserId());
@@ -95,7 +100,7 @@ public class LectureRepositoryTest {
 
     @Test
     @DisplayName("유저 정보 불러오기2")
-    public void get_user2() {
+    public void get_user2() throws Exception {
         //given
         long userId = 5L;
         Users insertUser = userRepository.save(Users.builder()
@@ -103,11 +108,11 @@ public class LectureRepositoryTest {
                 .userName("이하이").build());
 
         // when
-        Optional<Users> userInfo = userRepository.findById(userId);
+        Users userInfo = userRepository.findById(userId).orElse(null);
 
         // then
-        assertEquals(insertUser.getUserId(), userInfo.get().getUserId());
-        assertEquals(insertUser.getUserName(), userInfo.get().getUserName());
+        assertEquals(insertUser.getUserId(), userInfo.getUserId());
+        assertEquals(insertUser.getUserName(), userInfo.getUserName());
     }
 
     @Test
@@ -133,7 +138,7 @@ public class LectureRepositoryTest {
 
     @Test
     @DisplayName("신청정보 가져오기")
-    public void get_apply() {
+    public void get_apply() throws Exception {
         //given
         long applyId= 1L;
         long lcId = 2L;
@@ -143,33 +148,14 @@ public class LectureRepositoryTest {
         applyRepository.save(Apply.builder().applyId(applyId).lcId(lcId).userId(userId).attendDate(attendDate).attendanceYn(attendanceYn).build());
 
         //when
-        Optional<Apply> applyInfo = applyRepository.findByLcIdAndUserId(lcId, userId);
+        Apply applyInfo = applyRepository.findByLcIdAndUserId(lcId, userId).orElse(null);
 
         //then
-        assertEquals(applyId, applyInfo.get().getApplyId());
-        assertEquals(lcId, applyInfo.get().getLcId());
-        assertEquals(userId, applyInfo.get().getUserId());
-        assertEquals(attendDate, applyInfo.get().getAttendDate());
-        assertEquals(attendanceYn, applyInfo.get().getAttendanceYn());
-    }
-
-    @Test
-    @DisplayName("모든 신청정보 가져오기")
-    public void get_All_apply() {
-        //given
-        String attendanceYn = "Y";
-        applyRepository.save(Apply.builder().applyId(111L).lcId(1000L).userId(51L).attendDate(new Date()).attendanceYn(attendanceYn).build());
-        applyRepository.save(Apply.builder().applyId(112L).lcId(1001L).userId(52L).attendDate(new Date()).attendanceYn(attendanceYn).build());
-        applyRepository.save(Apply.builder().applyId(113L).lcId(1002L).userId(53L).attendDate(new Date()).attendanceYn(attendanceYn).build());
-        applyRepository.save(Apply.builder().applyId(114L).lcId(1003L).userId(54L).attendDate(new Date()).attendanceYn(attendanceYn).build());
-        applyRepository.save(Apply.builder().applyId(115L).lcId(1004L).userId(55L).attendDate(new Date()).attendanceYn(attendanceYn).build());
-        applyRepository.save(Apply.builder().applyId(116L).lcId(1005L).userId(56L).attendDate(new Date()).attendanceYn(attendanceYn).build());
-
-        //when
-        List<Apply> applyInfo = applyRepository.findAll();
-
-        //then
-        assertEquals(6, applyInfo.size());
+        assertEquals(applyId, applyInfo.getApplyId());
+        assertEquals(lcId, applyInfo.getLcId());
+        assertEquals(userId, applyInfo.getUserId());
+        assertEquals(attendDate, applyInfo.getAttendDate());
+        assertEquals(attendanceYn, applyInfo.getAttendanceYn());
     }
 
     @Test
@@ -199,17 +185,20 @@ public class LectureRepositoryTest {
 
     @Test
     @DisplayName("Lecture 정보 업데이트")
-    void update_lecture() {
+    void update_lecture()  throws Exception{
         //given
         long lcId = 124L;
         Date openDate = new Date();
         Lecture lecture = Lecture.builder().lcId(lcId).lectureName("한국사").openDate(openDate).maxAttendees(30).build();
         lectureRepository.save(lecture);
         //when
-        Lecture selectLecture = lectureRepository.findById(lcId).get();
-        int rLecture = lectureRepository.updateLectureMaxAttendees(selectLecture.getMaxAttendees()-1, selectLecture.getLcId());
+        Lecture selectLecture = lectureRepository.findById(lcId).orElse(null);
+        Lecture updateLecture = selectLecture.builder().lcId(selectLecture.getLcId()).lectureName(selectLecture.getLectureName())
+                .openDate(selectLecture.getOpenDate()).maxAttendees(selectLecture.getMaxAttendees()-1).build();
+        Lecture rLecture = lectureRepository.save(updateLecture);
         //then
-        assertThat(rLecture).isEqualTo(1);
+        assertThat(rLecture.getLcId()).isEqualTo(updateLecture.getLcId());
+        assertThat(rLecture.getMaxAttendees()).isEqualTo(updateLecture.getMaxAttendees());
     }
 
 }

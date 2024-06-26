@@ -1,4 +1,4 @@
-package com.hhplus.lecture.entity;
+package com.hhplus.lecture.business.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

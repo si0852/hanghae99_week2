@@ -1,8 +1,8 @@
 package com.hhplus.lecture.validation;
 
-import com.hhplus.lecture.entity.Apply;
-import com.hhplus.lecture.entity.Lecture;
-import com.hhplus.lecture.entity.Users;
+import com.hhplus.lecture.business.entity.Apply;
+import com.hhplus.lecture.business.entity.Lecture;
+import com.hhplus.lecture.business.entity.Users;
 import com.hhplus.lecture.exception.*;
 import com.hhplus.lecture.response.Response;
 import com.hhplus.lecture.type.ValidationType;

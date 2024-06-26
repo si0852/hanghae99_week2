@@ -1,4 +1,4 @@
-package com.hhplus.lecture.entity;
+package com.hhplus.lecture.business.entity;
 
 import com.hhplus.lecture.type.LectureType;
 import jakarta.persistence.*;
