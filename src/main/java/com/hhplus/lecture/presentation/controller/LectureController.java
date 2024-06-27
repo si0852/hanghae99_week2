@@ -31,7 +31,7 @@ public class LectureController {
     }
 
     @GetMapping("/application/{userId}/{scheduleId}")
-    public ResponseEntity<ResponseDto> getSchedule(
+    public ResponseEntity<ResponseDto> isApplied(
             @PathVariable(name = "userId") long userId,
             @PathVariable(name = "scheduleId") long scheduleId
     ) throws Exception  {
