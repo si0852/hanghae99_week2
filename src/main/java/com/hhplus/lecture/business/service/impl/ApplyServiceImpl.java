@@ -36,9 +36,9 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Transactional
     @Override
-    public Apply apply(ApplyDto applyDto) throws Exception{
+    public Boolean apply(ApplyDto applyDto) throws Exception{
         Date today = new Date();
-        try{
+        try {
             Users userInfo = userRepository.findByUserId(applyDto.userId());
             if (userInfo == null) throw new NoUserInfoException(new Response(500, "유저정보가 없습니다."));
 
@@ -47,22 +47,23 @@ public class ApplyServiceImpl implements ApplyService {
             if (!scheduleInfo.isMaxAttendees()) throw new FullOfPeopleException(new Response(500, "인원이 가득찼습니다."));
 
 
-            if(scheduleInfo.isOpenDate(today)) throw new NoOpenDateException(new Response(500, "오픈일자가 아닙니다."));
+            if (scheduleInfo.isOpenDate(today)) throw new NoOpenDateException(new Response(500, "오픈일자가 아닙니다."));
 
             Lecture lectureInfo = lectureRepository.findById(scheduleInfo.getLcId());
-            if(lectureInfo == null) throw new NoLectureInfoException(new Response(500, "등록된 강의가 없습니다."));
+            if (lectureInfo == null) throw new NoLectureInfoException(new Response(500, "등록된 강의가 없습니다."));
 
             Apply applyInfo = applyRepository.getApplyInfo(applyDto.scheduleId(), applyDto.userId());
-            if(applyInfo != null && applyInfo.getAttendanceYn().equals("Y")) throw new NotExistApplyInfoException(new Response(500, "신청정보가 존재합니다."));
+            if (applyInfo != null && applyInfo.getAttendanceYn().equals("Y"))
+                throw new NotExistApplyInfoException(new Response(500, "신청정보가 존재합니다."));
 
             Apply newApplyInfo = new Apply(applyDto.scheduleId(), applyDto.userId(), today, "Y");
-            Apply saveApply = applyRepository.save(newApplyInfo);
+             applyRepository.save(newApplyInfo);
 
             scheduleInfo.decrease();
             scheduleRepository.save(scheduleInfo);
 
-            return saveApply;
-        }finally {
+            return true;
+        } finally {
             lectureHistoryRepository.save(new LectureHistory(applyDto.scheduleId(), applyDto.userId(), LectureType.APPLICATION, today));
         }
     }
