@@ -18,7 +18,7 @@ public class LectureHistory {
     private Long historyId;
 
     @NotNull
-    private Long lmId;
+    private Long scheduleId;
 
     @NotNull
     private Long userId;
@@ -28,9 +28,8 @@ public class LectureHistory {
 
     private Date attendDate;
 
-    public LectureHistory(Long historyId, Long lmId, Long userId, LectureType type, Date attendDate) {
-        this.historyId = historyId;
-        this.lmId = lmId;
+    public LectureHistory(Long scheduleId, Long userId, LectureType type, Date attendDate) {
+        this.scheduleId = scheduleId;
         this.userId = userId;
         this.type = type;
         this.attendDate = attendDate;

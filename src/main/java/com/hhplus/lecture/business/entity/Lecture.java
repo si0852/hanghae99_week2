@@ -20,13 +20,9 @@ public class Lecture {
     private long lcId;
     @NotBlank
     private String lectureName;
-    @Min(1)
-    private int maxAttendees;
 
-
-    public Lecture (long lcId, String lectureName, int maxAttendees) {
+    public Lecture (long lcId, String lectureName) {
         this.lcId = lcId;
         this.lectureName = lectureName;
-        this.maxAttendees = maxAttendees;
     }
 }

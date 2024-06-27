@@ -22,16 +22,15 @@ public class Apply {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long applyId;
     @NotNull
-    private Long lcId;
+    private Long scheduleId;
     @NotNull
     private Long userId;
     private Date attendDate;
     @NotBlank
     private String attendanceYn;
 
-    public Apply(Long applyId, Long lcId, Long userId, Date attendDate, String attendanceYn) {
-        this.applyId = applyId;
-        this.lcId = lcId;
+    public Apply(Long scheduleId, Long userId, Date attendDate, String attendanceYn) {
+        this.scheduleId = scheduleId;
         this.userId = userId;
         this.attendDate = attendDate;
         this.attendanceYn = attendanceYn;

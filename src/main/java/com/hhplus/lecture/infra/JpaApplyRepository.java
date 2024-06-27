@@ -15,9 +15,9 @@ public interface JpaApplyRepository extends JpaRepository<Apply, Long>, ApplyRep
     }
 
     @Override
-    default Apply getApplyInfo(long lcId, long userId) {
-        return findByLcIdAndUserId(lcId, userId).orElse(null);
+    default Apply getApplyInfo(long scheduleId, long userId) {
+        return findByLcIdAndUserId(scheduleId, userId).orElse(null);
     }
 
-    Optional<Apply> findByLcIdAndUserId(long lcId, long userId);
+    Optional<Apply> findByLcIdAndUserId(long scheduleId, long userId);
 }

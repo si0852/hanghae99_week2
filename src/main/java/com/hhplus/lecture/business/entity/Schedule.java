@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,11 +23,29 @@ public class Schedule {
     private Long scheduleId;
     @NotNull
     private Long lcId;
+    @NotBlank
+    private String lectureName;
     private Date openDate;
+    @Min(1)
+    private int maxAttendees;
 
-    public Schedule(Long scheduleId, Long lcId, Date openDate) {
-        this.scheduleId = scheduleId;
+    public Schedule(Long lcId, Date openDate,int maxAttendees, String lectureName) {
         this.lcId = lcId;
         this.openDate = openDate;
+        this.maxAttendees = maxAttendees;
+        this.lectureName = lectureName;
+    }
+
+    public boolean isMaxAttendees() {
+        if (this.maxAttendees < 1) return false;
+        return true;
+    }
+
+    public boolean isOpenDate(Date applyDate) {
+        return applyDate.before(this.openDate);
+    }
+
+    public void decrease() {
+        this.maxAttendees -= 1;
     }
 }

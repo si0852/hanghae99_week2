@@ -21,7 +21,7 @@ public class Validator {
 
     public static ValidationType getLectureInfoValue(Lecture lecture) {
         if(lecture == null) return ValidationType.LECTURE_INVALID;
-        else if(lecture.getMaxAttendees() < 1) return ValidationType.FULL_OF_PEOPLE;
+//        else if(lecture.getMaxAttendees() < 1) return ValidationType.FULL_OF_PEOPLE;
         return ValidationType.VALID;
     }
 
