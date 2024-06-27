@@ -1,8 +1,7 @@
 package com.hhplus.lecture.business.service;
 
 import com.hhplus.lecture.business.entity.Schedule;
-import com.hhplus.lecture.dto.ApplyDto;
-import com.hhplus.lecture.business.entity.Apply;
+import com.hhplus.lecture.presentation.dto.ApplyDto;
 
 import java.util.List;
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JpaLectureHistoryRepository extends JpaRepository<LectureHistory, Long>, LectureHistoryRepository {
     @Override
-    default LectureHistory save(LectureHistory lectureHistory) {
+    default LectureHistory saveHistory(LectureHistory lectureHistory) {
         return save(lectureHistory);
     }
 }

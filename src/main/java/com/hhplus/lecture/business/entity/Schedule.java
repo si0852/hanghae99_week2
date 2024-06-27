@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,27 +26,29 @@ public class Schedule {
     private Long lcId;
     @NotBlank
     private String lectureName;
-    private Date openDate;
+    private LocalDateTime openDate;
     @Min(1)
     private int maxAttendees;
+    private int attendees;
 
-    public Schedule(Long lcId, Date openDate,int maxAttendees, String lectureName) {
+    public Schedule(Long lcId, LocalDateTime openDate,int maxAttendees, int attendees ,String lectureName) {
         this.lcId = lcId;
         this.openDate = openDate;
         this.maxAttendees = maxAttendees;
         this.lectureName = lectureName;
+        this.attendees = attendees;
     }
 
     public boolean isMaxAttendees() {
-        if (this.maxAttendees < 1) return false;
+        if (this.maxAttendees < attendees+1) return false;
         return true;
     }
 
-    public boolean isOpenDate(Date applyDate) {
-        return applyDate.before(this.openDate);
+    public boolean isOpenDate(LocalDateTime applyDate) {
+        return applyDate.isBefore(this.openDate);
     }
 
-    public void decrease() {
-        this.maxAttendees -= 1;
+    public void increase() {
+        this.attendees += 1;
     }
 }

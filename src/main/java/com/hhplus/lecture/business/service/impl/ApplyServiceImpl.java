@@ -3,16 +3,16 @@ package com.hhplus.lecture.business.service.impl;
 import com.hhplus.lecture.business.entity.*;
 import com.hhplus.lecture.business.repository.*;
 import com.hhplus.lecture.business.service.ApplyService;
-import com.hhplus.lecture.dto.ApplyDto;
+import com.hhplus.lecture.presentation.dto.ApplyDto;
 import com.hhplus.lecture.exception.*;
-import com.hhplus.lecture.response.Response;
+import com.hhplus.lecture.presentation.dto.ResponseDto;
 import com.hhplus.lecture.type.LectureType;
-import com.hhplus.lecture.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -37,61 +37,59 @@ public class ApplyServiceImpl implements ApplyService {
     @Transactional
     @Override
     public Boolean apply(ApplyDto applyDto) throws Exception{
-        Date today = new Date();
+        LocalDateTime today = LocalDateTime.now();
         try {
-            Users userInfo = userRepository.findByUserId(applyDto.userId());
-            if (userInfo == null) throw new NoUserInfoException(new Response(500, "유저정보가 없습니다."));
+            Users userInfo = userRepository.getUser(applyDto.getUserId());
+            if (userInfo == null) throw new NoUserInfoException(new ResponseDto(500, "유저정보가 없습니다.", false));
 
-            Schedule scheduleInfo = scheduleRepository.findById(applyDto.scheduleId());
-            if (scheduleInfo == null) throw new NoScheduleInfoException(new Response(500, "등록된 스케쥴이 없습니다."));
-            if (!scheduleInfo.isMaxAttendees()) throw new FullOfPeopleException(new Response(500, "인원이 가득찼습니다."));
+            Schedule scheduleInfo = scheduleRepository.getSchedule(applyDto.getScheduleId());
+            if (scheduleInfo == null) throw new NoScheduleInfoException(new ResponseDto(500, "등록된 스케쥴이 없습니다.", false));
+            if (!scheduleInfo.isMaxAttendees()) throw new FullOfPeopleException(new ResponseDto(500, "인원이 가득찼습니다.", false));
 
 
-            if (scheduleInfo.isOpenDate(today)) throw new NoOpenDateException(new Response(500, "오픈일자가 아닙니다."));
+            if (scheduleInfo.isOpenDate(today)) throw new NoOpenDateException(new ResponseDto(500, "오픈일자가 아닙니다.", false));
 
-            Lecture lectureInfo = lectureRepository.findById(scheduleInfo.getLcId());
-            if (lectureInfo == null) throw new NoLectureInfoException(new Response(500, "등록된 강의가 없습니다."));
+            Lectures lectureInfo = lectureRepository.getLectures(scheduleInfo.getLcId());
+            if (lectureInfo == null) throw new NoLectureInfoException(new ResponseDto(500, "등록된 강의가 없습니다.", false));
 
-            Apply applyInfo = applyRepository.getApplyInfo(applyDto.scheduleId(), applyDto.userId());
+            Apply applyInfo = applyRepository.getApplyInfo(applyDto.getScheduleId(), applyDto.getUserId());
             if (applyInfo != null && applyInfo.getAttendanceYn().equals("Y"))
-                throw new NotExistApplyInfoException(new Response(500, "신청정보가 존재합니다."));
+                throw new ExistApplyInfoException(new ResponseDto(500, "신청정보가 존재합니다.", false));
 
-            Apply newApplyInfo = new Apply(applyDto.scheduleId(), applyDto.userId(), today, "Y");
-             applyRepository.save(newApplyInfo);
+            Apply newApplyInfo = new Apply(applyDto.getScheduleId(), applyDto.getUserId(), today, "Y");
+            applyRepository.saveApply(newApplyInfo);
 
-            scheduleInfo.decrease();
-            scheduleRepository.save(scheduleInfo);
+            scheduleInfo.increase();
+            scheduleRepository.update(scheduleInfo);
 
             return true;
         } finally {
-            lectureHistoryRepository.save(new LectureHistory(applyDto.scheduleId(), applyDto.userId(), LectureType.APPLICATION, today));
+            lectureHistoryRepository.saveHistory(new LectureHistory(applyDto.getScheduleId(), applyDto.getUserId(), LectureType.APPLICATION, today));
         }
     }
 
     @Override
     public Boolean isApplied(long scheduleId, long userId) throws Exception{
-        Users userInfo = userRepository.findByUserId(userId);
+        Users userInfo = userRepository.getUser(userId);
         if (userInfo == null) {
-            throw new NoUserInfoException(new Response(500, "유저정보가 없습니다."));
+            throw new NoUserInfoException(new ResponseDto(500, "유저정보가 없습니다.", null));
         }
-        Schedule scheduleInfo = scheduleRepository.findById(scheduleId);
+        Schedule scheduleInfo = scheduleRepository.getSchedule(scheduleId);
         if (scheduleInfo == null) {
-            throw new NoScheduleInfoException(new Response(500, "등록된 스케쥴이 없습니다."));
+            throw new NoScheduleInfoException(new ResponseDto(500, "등록된 스케쥴이 없습니다.", null));
         }
         Apply applyInfo = applyRepository.getApplyInfo(scheduleId, userId);
-        return applyInfo == null ? false : true;
+        return (applyInfo != null && applyInfo.getAttendanceYn().equals("Y")) ? true : false;
     }
 
     @Override
     public List<Schedule> getScheduledList() throws Exception {
         List<Schedule> scheduleList = scheduleRepository.getScheduleList();
         if (scheduleList.size() == 0) {
-            throw new NoScheduleInfoException(new Response(500, "등록된 스케쥴이 없습니다."));
+            throw new NoScheduleInfoException(new ResponseDto(500, "등록된 스케쥴이 없습니다.", null));
         }
         return scheduleList;
     }
 
-    private void validationCheck(Apply apply)throws Exception {
-        Validator.validate(Validator.applyOpenValue(apply));
-    }
+
 }

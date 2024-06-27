@@ -1,16 +1,16 @@
 package com.hhplus.lecture.exception;
 
-import com.hhplus.lecture.response.Response;
+import com.hhplus.lecture.presentation.dto.ResponseDto;
 
 public class NoScheduleInfoException extends Exception{
 
-    private Response response;
+    private ResponseDto response;
 
-    public NoScheduleInfoException(Response response) {
+    public NoScheduleInfoException(ResponseDto response) {
         this.response = response;
     }
 
-    public Response getResponse() {
+    public ResponseDto getResponse() {
         return response;
     }
 }

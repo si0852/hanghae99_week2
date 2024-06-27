@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface ScheduleRepository {
 
-    Schedule save(Schedule schedule);
+    Schedule saveSchedule(Schedule schedule);
 
-    Schedule findById(long scheduleId);
+    Schedule update(Schedule schedule);
+
+    Schedule getSchedule(long scheduleId);
 
     List<Schedule> getScheduleList();
 }

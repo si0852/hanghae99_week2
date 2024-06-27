@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,11 +26,11 @@ public class Apply {
     private Long scheduleId;
     @NotNull
     private Long userId;
-    private Date attendDate;
+    private LocalDateTime attendDate;
     @NotBlank
     private String attendanceYn;
 
-    public Apply(Long scheduleId, Long userId, Date attendDate, String attendanceYn) {
+    public Apply(Long scheduleId, Long userId, LocalDateTime attendDate, String attendanceYn) {
         this.scheduleId = scheduleId;
         this.userId = userId;
         this.attendDate = attendDate;

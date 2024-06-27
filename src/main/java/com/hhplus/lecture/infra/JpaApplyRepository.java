@@ -10,14 +10,14 @@ import java.util.Optional;
 @Repository
 public interface JpaApplyRepository extends JpaRepository<Apply, Long>, ApplyRepository {
     @Override
-    default Apply save(Apply apply) {
+    default Apply saveApply(Apply apply) {
         return save(apply);
     }
 
     @Override
     default Apply getApplyInfo(long scheduleId, long userId) {
-        return findByLcIdAndUserId(scheduleId, userId).orElse(null);
+        return findByScheduleIdAndUserId(scheduleId, userId).orElse(null);
     }
 
-    Optional<Apply> findByLcIdAndUserId(long scheduleId, long userId);
+    Optional<Apply> findByScheduleIdAndUserId(long scheduleId, long userId);
 }

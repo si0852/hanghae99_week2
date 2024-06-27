@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -26,9 +27,9 @@ public class LectureHistory {
     @Enumerated(EnumType.STRING)
     private LectureType type;
 
-    private Date attendDate;
+    private LocalDateTime attendDate;
 
-    public LectureHistory(Long scheduleId, Long userId, LectureType type, Date attendDate) {
+    public LectureHistory(Long scheduleId, Long userId, LectureType type, LocalDateTime attendDate) {
         this.scheduleId = scheduleId;
         this.userId = userId;
         this.type = type;

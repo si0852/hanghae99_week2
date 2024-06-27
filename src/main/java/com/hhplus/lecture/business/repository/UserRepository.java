@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserRepository{
 
-    Users save(Users users);
+    Users saveUsers(Users users);
 
-    Users findByUserId(Long userId);
+    Users getUser(Long userId);
 }

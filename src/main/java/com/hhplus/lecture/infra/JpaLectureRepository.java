@@ -1,20 +1,19 @@
 package com.hhplus.lecture.infra;
 
-import com.hhplus.lecture.business.entity.Lecture;
+import com.hhplus.lecture.business.entity.Lectures;
 import com.hhplus.lecture.business.repository.LectureRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 @Repository
-public interface JpaLectureRepository extends JpaRepository<Lecture, Long>, LectureRepository {
+public interface JpaLectureRepository extends JpaRepository<Lectures, Long>, LectureRepository {
     @Override
-    default Lecture save(Lecture lecture) {
+    default Lectures saveLectures(Lectures lecture) {
         return save(lecture);
     }
 
     @Override
-    default Lecture findById(long lcId) {
-        return findById(lcId);
+    default Lectures getLectures(long lcId) {
+        return findById(lcId).orElse(null);
     }
 }

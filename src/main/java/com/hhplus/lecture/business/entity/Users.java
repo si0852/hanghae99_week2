@@ -1,6 +1,8 @@
 package com.hhplus.lecture.business.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Users {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long userId;
 
     private String userName;

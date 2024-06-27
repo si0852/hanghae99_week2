@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JpaUserRepository extends JpaRepository<Users, Long>, UserRepository {
     @Override
-    default Users save(Users users) {
+    default Users saveUsers(Users users) {
         return save(users);
     }
 
     @Override
-    default Users findByUserId(Long userId) {
-        return findByUserId(userId);
+    default Users getUser(Long userId) {
+        return findById(userId).orElse(null);
     }
 }

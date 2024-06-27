@@ -4,5 +4,5 @@ import com.hhplus.lecture.business.entity.LectureHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LectureHistoryRepository{
-    LectureHistory save(LectureHistory lectureHistory);
+    LectureHistory saveHistory(LectureHistory lectureHistory);
 }
